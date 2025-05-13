@@ -10,9 +10,9 @@
       font-family: Arial, sans-serif;
       margin: 0;
       background: #f9f9f9;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
     }
     header {
       background-color: #4CAF50;
@@ -23,25 +23,24 @@
     }
     .container {
       display: flex;
-      flex: 1;
-      overflow: hidden;
+      flex-direction: row;
+      width: 100%;
       max-width: 1200px;
       margin: 0 auto;
-      width: 100%;
+      flex: 1 1 auto;
+      min-height: 0;
     }
     .calendar-container {
-      flex: 2;
+      flex: 2 1 0;
       padding: 20px;
-      overflow-y: auto;
       background: #fff;
       min-width: 0;
+      border-right: 1px solid #ccc;
     }
     .task-panel {
-      flex: 1;
+      flex: 1 1 0;
       background-color: #fff;
-      border-left: 1px solid #ccc;
       padding: 20px;
-      overflow-y: auto;
       min-width: 280px;
       max-width: 400px;
     }
@@ -153,18 +152,21 @@
     @media (max-width: 900px) {
       .container {
         flex-direction: column;
-        min-width: 0;
+        align-items: stretch;
+        height: auto;
+        min-height: 0;
       }
       .calendar-container, .task-panel {
+        width: 100%;
         max-width: 100%;
         min-width: 0;
+        padding: 14px;
+        border: none;
       }
       .calendar-container {
-        border-right: none;
         border-bottom: 1px solid #ccc;
       }
       .task-panel {
-        border-left: none;
         border-top: 1px solid #ccc;
       }
     }
@@ -173,7 +175,7 @@
         grid-template-columns: repeat(7, 1fr);
       }
       .calendar-container, .task-panel {
-        padding: 10px;
+        padding: 8px;
       }
       .month-title {
         font-size: 17px;
@@ -195,6 +197,8 @@
       }
     }
   </style>
+  <!-- DragDropTouch Polyfill for mobile drag-and-drop support -->
+  <script src="https://cdn.jsdelivr.net/npm/drag-drop-touch@2.0.2/DragDropTouch.js"></script>
 </head>
 <body>
   <header>Interactive Task Calendar</header>
@@ -385,6 +389,7 @@
 
     // Initial render
     loadCalendar(currentMonth, currentYear);
+
     // If user rotates/resizes, update focus
     window.addEventListener('resize', () => {
       if (window.innerWidth <= 900 && selectedDate) setTimeout(() => taskInput.focus(), 200);
